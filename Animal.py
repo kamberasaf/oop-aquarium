@@ -7,7 +7,7 @@ MAX_AGE = 120
 class Animal:
     def __init__(self, name, age, x, y, directionH):
         self.alive = True
-        self.width = MAX_ANIMAL_HEIGHT
+        self.width = MAX_ANIMAL_WIDTH
         self.height = MAX_ANIMAL_HEIGHT
         self.food = STARTING_FOOD
         self.name = name

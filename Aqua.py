@@ -62,8 +62,8 @@ class Aqua:
         board = self.get_board()
         crabs = [crab for crab in self.get_all_animal() if isinstance(crab, Crab.Crab) is True]
         for crab_2 in crabs:  # we want to look only at crabs.
-            if (a_dir == 1 and crab_2.x == x + 7) or \
-                    (a_dir == 0 and crab_2.x + 7 == x):  # we got a collision.
+            if (a_dir == 1 and crab_2.x == x + animal.width) or \
+                    (a_dir == 0 and crab_2.x + crab_2.width == x):  # we got a collision.
                 self.delete_animal_from_board(crab_2)
                 crab_2.set_directionH(1) if crab_2.get_directionH() == 0 else \
                     crab_2.set_directionH(0) if crab_2.get_directionH() == 1 else None
@@ -74,8 +74,8 @@ class Aqua:
                     if (board[aq_height - 3][x - 1] not in ['|', '*'] and
                             board[aq_height - 4][x - 1] not in ['|', '*']):
                         animal.set_x(x - 1)
-                    elif (board[aq_height - 3][x + 8] not in ['|', '*'] and
-                          board[aq_height - 4][x + 8] not in ['|', '*']):
+                    elif (board[aq_height - 3][x + animal.width + 1] not in ['|', '*'] and
+                          board[aq_height - 4][x + animal.width + 1] not in ['|', '*']):
                         animal.set_x(x + 1)
                 except IndexError:
                     pass
@@ -174,19 +174,26 @@ class Aqua:
         self.anim.append(new_crab)
         self.print_animal_on_board(new_crab)
         return True
-
     def check_if_free(self, x: int, y: int) -> bool:
-        """
-        method for checking whether the position is empty before inserting a new animal
+        """Check an area starting at (x,y) is free for the next animal's footprint.
+        Uses a conservative MAX footprint to avoid overlap.
         """
         try:
-            for t in range(MAX_ANIMAL_HEIGHT):
-                for i in self.board[y + t][x:x + MAX_ANIMAL_WIDTH]:
-                    if i == '*':
-                        return False  # we have an animal there
-        except IndexError:  # happens every time for the crabs.
-            pass
+            # Fallback to conservative max footprint if next animal size is unknown at callsite
+            h, w = MAX_ANIMAL_HEIGHT, MAX_ANIMAL_WIDTH
+            for t in range(h):
+                # Guard bounds
+                if y + t < 0 or y + t >= self.aqua_height:
+                    continue
+                row = self.board[y + t]
+                x0, x1 = max(0, x), min(self.aqua_width, x + w)
+                if '*' in row[x0:x1]:
+                    return False
+        except IndexError:
+            # Out of bounds means not placeable
+            return False
         return True
+
 
     def left(self, a: Animal):
         animal = a
@@ -207,8 +214,8 @@ class Aqua:
     def right(self, a: Animal):
         animal = a
         x, y = animal.get_position()
-        if (isinstance(animal, Crab.Crab) and self.board[y][x + 7] == '|') or \
-                (isinstance(animal, Fish.Fish) and self.board[y][x + 8] == '|'):
+        if (isinstance(animal, Crab.Crab) and self.board[y][x + animal.width] == '|') or \
+                (isinstance(animal, Fish.Fish) and self.board[y][x + animal.width] == '|'):
             self.delete_animal_from_board(animal)  # if it's a wall just turn around
             animal.set_directionH(0)
             return self.print_animal_on_board(animal)
@@ -236,7 +243,8 @@ class Aqua:
     def down(self, a: Animal):
         fish = a
         x, y = fish.get_position()
-        if self.aqua_height - y - fish.height - 1 == MAX_CRAB_HEIGHT:  # lower edge
+        bottom = self.aqua_height - MAX_CRAB_HEIGHT - 1
+        if y + fish.height >= bottom:
             fish.set_directionV(1)
             self.delete_animal_from_board(fish)
             self.print_animal_on_board(fish)

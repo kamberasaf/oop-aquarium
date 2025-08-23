@@ -38,7 +38,11 @@ python main.py
 
 
 
-### Example
+### Demo
+
+![Aquarium Demo](assets/aquarium_demo.gif)
+
+## Example
 ```plaintext
 Welcome to "The OOP Aquarium"
 The width of the aquarium (Minimum 40): 50
@@ -57,9 +61,12 @@ Main menu
 What do you want to do? 5
 ```
 
+
+
+
+## Demo
+
 ![Aquarium Demo](assets/aquarium_demo.gif)
-
-
 
 ## Examples
 To see how animals can be added programmatically:
@@ -73,5 +80,32 @@ Tests are located in the tests/ directory and use pytest.
 To run the tests:
 ```bash
 pip install pytest
+pytest tests/
+```
+
+
+## Quickstart
+```bash
+python main.py
+```
+
+## Programmatic demo
+```python
+from Aqua import Aqua
+aq = Aqua(50,25)
+aq.add_animal("scalarfish1", 4, 10, 10, 1, 0, 'sc')
+aq.add_animal("molyfish2", 12, 35, 15, 0, 1, 'mo')
+aq.add_animal("shrimpcrab1", 3, 20, aq.aqua_height, 1, 0, 'sh')
+aq.add_animal("ocypodcrab1", 13, 41, aq.aqua_height, 0, 0, 'oc')
+for _ in range(3):
+    aq.print_board()
+    aq.next_turn()
+```
+
+
+## Tests
+Run the unit tests with pytest:
+
+```bash
 pytest tests/
 ```
