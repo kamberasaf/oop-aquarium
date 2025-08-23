@@ -62,19 +62,6 @@ What do you want to do? 5
 ```
 
 
-
-
-## Demo
-
-![Aquarium Demo](assets/aquarium_demo.gif)
-
-## Examples
-To see how animals can be added programmatically:
-```bash
-python examples/add_animals_example.py
-```
-
-
 ## Running Tests
 Tests are located in the tests/ directory and use pytest.
 To run the tests:
