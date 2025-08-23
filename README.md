@@ -13,6 +13,11 @@ An object-oriented Python aquarium simulation featuring four types of animals: t
 - Demo mode showcasing the functionality with predefined animals
 
 
+### Demo
+
+![Aquarium Demo](assets/aquarium_demo.gif)
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -36,11 +41,6 @@ python main.py
 - Use the main menu to add animals, feed them, advance simulation steps, or run the demo
 - Follow input instructions carefully for adding animals (name, age, position, direction)
 
-
-
-### Demo
-
-![Aquarium Demo](assets/aquarium_demo.gif)
 
 ## Example
 ```plaintext
