@@ -1,4 +1,4 @@
-from aqua import Aqua
+from aquarium import Aqua
 
 def test_add_animal():
     aquarium = Aqua(50, 30)

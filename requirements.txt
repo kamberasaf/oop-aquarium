@@ -1,0 +1,2 @@
+# The OOP Aquarium - dependencies
+pytest>=7.0.0
